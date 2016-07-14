@@ -1,0 +1,44 @@
+{
+  "name": "bookshelf-flow",
+  "version": "0.1.0",
+  "description": "flow declarations for flow with tool to create model files from the db schema",
+  "bin": {
+    "bookshelf-flow": "dist/bin.js"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "npm run create-models && ava",
+    "flow": "flow",
+    "create-migration": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:make",
+    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --tables users --out test/models --bookshelf '../bookshelf'",
+    "migrate": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:latest && npm run create-models"
+  },
+  "author": "sakariij@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "babel-cli": "^6.10.1",
+    "babel-plugin-syntax-flow": "^6.8.0",
+    "babel-plugin-transform-class-properties": "^6.10.2",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "flow-bin": "^0.28.0",
+    "pg": "^6.0.1"
+  },
+  "dependencies": {
+    "bookshelf": "^0.10.0",
+    "command-line-args": "^3.0.0",
+    "knex": "^0.11.7"
+  },
+  "ava": {
+    "files": ["test/cases/*.js"],
+    "source": ["**/*.js", "!dist/**/*"],
+    "failFast": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  }
+}
