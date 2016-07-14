@@ -1,6 +1,6 @@
 // @flow
 
-import typeof {Knex} from '../../src/knex'
+import typeof {Knex} from '../../knex'
 
 export const up = (knex: Knex) =>
   knex.schema.createTable('users', table => {

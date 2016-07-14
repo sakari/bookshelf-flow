@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "description": "flow declarations for flow with tool to create model files from the db schema",
   "bin": {
-    "bookshelf-flow": "dist/bin.js"
+    "bookshelf-flow": "src/bin.js"
   },
   "main": "dist/index.js",
   "scripts": {
     "test": "npm run migrate && npm run create-models && npm run flow && ava",
     "flow": "flow",
     "create-migration": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:make",
-    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --tables users,sessions --out test/models --bookshelf '../bookshelf'",
+    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --model ../../bookshelf --tables users,sessions --out test/models --bookshelf '../bookshelf'",
     "migrate": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:latest"
   },
   "author": "sakariij@gmail.com",
