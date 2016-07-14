@@ -1,6 +1,6 @@
 // @flow
 
-import knex from 'knex'
-import bookshelf from 'bookshelf'
+import knex from '../src/knex'
+import bookshelf from '../src/bookshelf'
 import * as knexfile from './knexfile'
 export default bookshelf(knex(knexfile['development']));

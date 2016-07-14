@@ -1,3 +1,7 @@
+// @flow
+
+import knex from 'knex'
+
 interface Chainable {
   index(name?: string): Chainable;
   references(column: string): Chainable;
@@ -17,12 +21,11 @@ interface Schema {
   dropTableIfExists(table: string): Promise<mixed>;
 }
 
-declare module 'knex' {
-  declare class Knex {
-    static schema: Schema;
-  }
-  declare var exports : {
-    (): Knex;
-    Knex: Class<Knex>;
-  }
+export class Knex {
+  static schema: Schema;
 }
+
+
+const knexFlow : (() => Knex)  = knex
+export default knexFlow
+

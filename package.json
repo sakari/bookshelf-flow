@@ -7,11 +7,11 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "test": "npm run create-models && ava",
+    "test": "npm run migrate && npm run create-models && npm run flow && ava",
     "flow": "flow",
     "create-migration": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:make",
-    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --tables users --out test/models --bookshelf '../bookshelf'",
-    "migrate": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:latest && npm run create-models"
+    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --tables users,sessions --out test/models --bookshelf '../bookshelf'",
+    "migrate": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:latest"
   },
   "author": "sakariij@gmail.com",
   "license": "MIT",
