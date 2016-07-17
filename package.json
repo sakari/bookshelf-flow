@@ -1,22 +1,29 @@
 {
   "name": "bookshelf-flow",
   "version": "0.1.0",
-  "description": "flow declarations for flow with tool to create model files from the db schema",
+  "description": "flow type declarations for bookshelf and a tool to create model files from the postgresql tables",
   "bin": {
-    "bookshelf-flow": "src/bin.js"
+    "bookshelf-flow": "dist/bin.js"
   },
-  "main": "dist/index.js",
   "scripts": {
+    "build": "rm -rf dist && babel src -d dist && npm run build-knex && npm run build-bookshelf && npm run copy-flow",
+    "build-knex": "rm -rf knex && mkdir knex && cp dist/knex.js knex/index.js && cp src/knex.js knex/index.js.flow",
+    "build-bookshelf": "rm -rf bookshelf && mkdir bookshelf && cp dist/bookshelf.js bookshelf/index.js && cp src/bookshelf.js bookshelf/index.js.flow",
     "test": "npm run migrate && npm run create-models && npm run flow && ava",
+    "preinstall": "npm run build",
     "flow": "flow",
     "create-migration": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:make",
-    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --model ../../bookshelf --tables users,sessions --out test/models --bookshelf '../bookshelf'",
-    "migrate": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:latest"
+    "create-models": "rm -f test/models/* && mkdir -p test/models && babel-node src/bin.js --connection postgresql://localhost/bookshelf-flow --model ../../src/bookshelf --tables users,sessions --out test/models --bookshelf '../bookshelf'",
+    "migrate": "babel-node node_modules/.bin/knex --knexfile test/knexfile.js migrate:latest",
+    "copy-flow": "for file in `ls src/`; do cp src/$file \"dist/${file/\\.js/.js.flow}\"; done"
   },
   "author": "sakariij@gmail.com",
   "license": "MIT",
   "devDependencies": {
     "ava": "^0.15.2",
+    "flow-bin": "^0.28.0"
+  },
+  "dependencies": {
     "babel-cli": "^6.10.1",
     "babel-plugin-syntax-flow": "^6.8.0",
     "babel-plugin-transform-class-properties": "^6.10.2",
@@ -24,11 +31,8 @@
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.5.0",
-    "flow-bin": "^0.28.0",
-    "pg": "^6.0.1"
-  },
-  "dependencies": {
     "bookshelf": "^0.10.0",
+    "pg": "^6.0.1",
     "command-line-args": "^3.0.0",
     "knex": "^0.11.7"
   },

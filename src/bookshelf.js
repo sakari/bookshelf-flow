@@ -13,7 +13,9 @@ const any : any = undefined
 // this is used only for providing an importable type for
 // generated models
 export class FlowModel<Fields, Get, Related, WithRelated> {
-  constructor(args: $Shape<Fields>): void {}
+  constructor(args: $Shape<Fields>): void {
+    throw new Error('do not create instances of this class')
+  }
   static where(query: $Shape<Fields>): Class<this> { return any }
   static fetch(opts?: { withRelated: (WithRelated | Array<WithRelated>)}): Promise<?this> { return any}
   get: Get;

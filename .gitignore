@@ -4,3 +4,5 @@ dist/
 flowserver.log.old
 flowserver.log
 test/models
+knex/
+bookshelf/
