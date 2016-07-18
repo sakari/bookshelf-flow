@@ -16,6 +16,15 @@ those. To use those definitions import the packages with
     import knex from 'bookshelf-flow/knex'
     import bookshelf from 'bookshelf-flow/bookshelf'
 
+## Installing
+
+The package can be installed directly from github with
+
+    npm install sakari/bookshelf-flow
+
+It will compile to plain javascript in the preinstall phase and set up
+`.js.flow` files for the flow type checker.
+
 ## Testing
 
 Create psql database with
