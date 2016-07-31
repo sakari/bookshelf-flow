@@ -12,7 +12,7 @@ const any : any = undefined
 export class FlowFetchedCollection<Model> {
   length: number;
   head(): ?Model { return any }
-
+  map<A>(fn: (model: Model, index: number) => A): Array<A> { return any }
 }
 
 export class FlowCollection<Fields, Get, Related, WithRelated> {
