@@ -15,11 +15,18 @@ export class FlowFetchedCollection<Model> {
   map<A>(fn: (model: Model, index: number) => A): Array<A> { return any }
 }
 
+type QueryOperator = '<' | '>' | '<=' | '>=' | '<>' | '='
+export class QueryBuilder<Fields> {
+  where(q: ($Shape<Fields> | $Enum<Fields>), op?: QueryOperator, value?: (number | string)) {}
+  limit(limit: number) {}
+  orderBy(field: $Enum<Fields>, direction: ('desc' | 'asc')) {}
+}
+
 export class FlowCollection<Fields, Get, Related, WithRelated> {
   constructor() {
     throw new Error('do these plse')
   }
-  query(q: { where?: $Shape<Fields>}): this { return any }
+  query(q: ({ where?: $Shape<Fields>} | (qb: QueryBuilder<Fields>) => mixed)): this { return any }
   fetch(): Promise<FlowFetchedCollection<FlowModel<Fields, Get, Related, WithRelated>>> { return any }
 }
 

@@ -5,10 +5,12 @@ import test from 'ava'
 import User from '../models/user'
 import Session from '../models/session'
 
-async function createUsers(n: number) {
+async function createUsers(n: number, email?: string) {
   const users = []
+  if (!email)
+    email = `${n}@example.com`
   while(n-- > 0) {
-   users.push(await new User({email: `${n}@example.com`}).save())
+   users.push(await new User({email: email}).save())
   }
   return users
 }
@@ -26,6 +28,29 @@ test('collection#query and fetch returns the matching models', async t => {
 
   // $fails
   first.get('foo')
+})
+
+test('query builder', async t => {
+  const users = await createUsers(10, 'querybuilder@example.com')
+  users.reverse()
+  const result = await User.collection().query(qb => {
+    qb.where('id', '<', users[2].get('id'))
+    qb.where({email: 'querybuilder@example.com'})
+    qb.limit(3)
+    qb.orderBy('id', 'desc')
+    if (false) {
+      // $fails
+      qb.where('nonexisting', '<', 1)
+      // $fails
+      qb.where({nonexisting: 1})
+      // $fails
+      qb.orderBy('nonexisting', 'desc')
+    }
+  }).fetch()
+
+  t.true(result.length === 3)
+  t.deepEqual(users.slice(3, 6).map(m => m.get('id')), result.map(m => m.get('id')))
+
 })
 
 test('query checks `where` parameters', async t => {
